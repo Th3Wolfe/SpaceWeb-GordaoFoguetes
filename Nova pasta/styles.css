@@ -1,10 +1,23 @@
-body {
+body{
     margin: 0;
     padding: 0;
     overflow: hidden;
   }
   
-  #fundo {
+  #pontos{
+    position:relative;
+    border: 5px whitesmoke solid;
+    font-size:150%;
+    color: whitesmoke;
+    text-align:center;
+  }
+
+  #p{
+    top:50%;
+    left:50%;
+  }
+
+  #fundo{
     position: absolute;
     top: 0;
     left: 0;
@@ -18,15 +31,15 @@ body {
   }
   
   @keyframes moveBackground{
-    0% {
+    0%{
       background-position: 0 0;
     }
-    100% {
+    100%{
       background-position: 0 -2000px;
     }
   }
   
-  #nave {
+  #nave{
     position: absolute;
     bottom: 50px;
     left: 30%;
@@ -60,7 +73,7 @@ body {
     }
   }
 
-  .inimigo {
+  .inimigo{
     position: absolute;
     width: 80px;
     height: 80px;
@@ -69,7 +82,7 @@ body {
     background-color: transparent;
   }
   
-  @keyframes moveInimigos {
+  @keyframes moveInimigos{
     from {
       transform: translateY(-80px);
     }
@@ -78,11 +91,11 @@ body {
     }
   }
   
-  .inimigo {
+  .inimigo{
     animation: moveInimigos linear infinite; /* Aumente a duração para tornar a animação mais lenta */
   }
 
-  .explosao {
+  .explosao{
     position: absolute;
     width: 100px;
     height: 100px;
@@ -93,11 +106,26 @@ body {
     animation: fadeOut 3s forwards;
   }
   
-  @keyframes fadeOut {
-    0% {
+  @keyframes fadeOut{
+    0%{
       opacity: 1;
     }
-    100% {
+    100%{
       opacity: 0;
     }
+  }
+
+  #gameover{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+  }
+
+  #Pontuacao{
+    position: absolute;
+    top: 30%;
+    left: 17%;
+    color: green;
+    font-size: 400%;
   }

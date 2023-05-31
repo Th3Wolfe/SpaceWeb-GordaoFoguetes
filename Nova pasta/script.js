@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const nave = document.getElementById("nave");
     const projeteisContainer = document.getElementById("projeteis");
+    const inimigosContainer = document.getElementById("projeteis");
     const posicaoInicial = nave.offsetLeft;
     let positionX = posicaoInicial;
     let projeteis = [];
@@ -9,9 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
     function moveNave(event){
       const key = event.keyCode;
   
-      if (key === 37) { // Tecla esquerda
+      if (key === 37 || key == 65) { // Tecla esquerda
         positionX -= 15;
-      } else if (key === 39) { // Tecla direita
+      } else if (key === 39 || key == 68) { // Tecla direita
         positionX += 15;
       }
   
@@ -52,13 +53,24 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   
     document.addEventListener("keydown", moveNave);
-    setInterval(moverProjeteis, 50); // Chama a função moverProjeteis a cada 50 milissegundos
-    setInterval(criarProjetil, 300); // Cria um novo projetil a cada meio segundo
+    setInterval(moverProjeteis, 30); // Chama a função moverProjeteis a cada 50 milissegundos
+    setInterval(criarProjetil, 200); // Cria um novo projetil a cada meio segundo
 
     function criarInimigo() {
       const inimigo = document.createElement("div");
       inimigo.classList.add("inimigo");
-      projeteisContainer.appendChild(inimigo);
+      inimigosContainer.appendChild(inimigo);
+
+      const numeroAleatorio = Math.floor(Math.random() * 4) + 1;
+      if(numeroAleatorio === 2){
+        inimigo.style.backgroundImage = 'url(inimigo2.png)';
+      }
+      if(numeroAleatorio === 3){
+        inimigo.style.backgroundImage = 'url(inimigo3.png)';
+      }
+      if(numeroAleatorio === 4){
+        inimigo.style.backgroundImage = 'url(inimigo4.png)';
+      }
     
       const limiteEsquerdo = 30; // Defina o limite esquerdo para o movimento do inimigo
       const limiteDireito = window.innerWidth - 130; // Defina o limite direito para o movimento do inimigo
@@ -82,9 +94,10 @@ document.addEventListener("DOMContentLoaded", function() {
         inimigo.element.style.transform = `translateY(${inimigo.posY}px)`;
     
         if (inimigo.posY > window.max-innerHeight || colisao(nave, inimigo.element)) {
-          projeteisContainer.removeChild(inimigo.element);
+          inimigosContainer.removeChild(inimigo.element);
           inimigos.splice(i, 1);
           i--;
+          diminuirVida();
         }
       }
     }
@@ -101,8 +114,8 @@ document.addEventListener("DOMContentLoaded", function() {
       );
     }
     
-    setInterval(moverInimigos, 50); // Chama a função moverInimigos a cada 50 milissegundos
-    setInterval(criarInimigo, 500); // Cria um novo inimigo a cada 3 segundos
+    setInterval(moverInimigos, 10); // Chama a função moverInimigos a cada 50 milissegundos
+    setInterval(criarInimigo, 150); // Cria um novo inimigo a cada 3 segundos
 
     function verificarColisao() {
       for (let i = 0; i < projeteis.length; i++) {
@@ -126,7 +139,8 @@ document.addEventListener("DOMContentLoaded", function() {
             projeteis.splice(i, 1);
             inimigosContainer.removeChild(inimigo.element);
             inimigos.splice(j, 1);
-    
+
+            aumentarPontos();
             i--;
             break;
           }
@@ -134,6 +148,35 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
     
-    setInterval(verificarColisao, 50);
+    setInterval(verificarColisao, 50); // verifica se houve uma colisão entre um projetil e um inimigo a cada 50 milisegundos
+
+    function aumentarPontos() {
+      var pontosElement = document.getElementById("valorPontos");
+      var pontos = parseInt(pontosElement.innerText);
+      pontos += 100;
+      pontosElement.innerText = pontos;
+    }
+
+    function diminuirVida() {
+      var pontosElement = document.getElementById("valorVida");
+      var pontos = parseInt(pontosElement.innerText);
+      if(pontos === 1){
+        gameover();
+      }
+      pontos -= 1;
+      pontosElement.innerText = pontos;
+    }
+
+    function gameover(){
+      const gameContainer = document.getElementById("fundo");
+      gameContainer.style.display = "none";
+
+      const gameOverScreen = document.getElementById("gameover");
+      const gameOverPontos = document.getElementById("gameover-pontos");
+
+      gameOverScreen.style.display = "block";
+
+      gameOverPontos.textContent = document.getElementById("valorPontos").textContent;
+    }
 
   });
