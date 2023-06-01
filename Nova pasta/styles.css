@@ -5,11 +5,13 @@ body{
   }
   
   #pontos{
-    position:relative;
+    position:absolute;
     border: 5px whitesmoke solid;
     font-size:150%;
+    font:oblique;
     color: whitesmoke;
     text-align:center;
+    display:contents;
   }
 
   #p{
@@ -41,7 +43,7 @@ body{
   
   #nave{
     position: absolute;
-    bottom: 50px;
+    bottom: 10px;
     left: 30%;
     transform: translate(-50%, -50%);
     width: 100px;
@@ -75,7 +77,7 @@ body{
 
   .inimigo{
     position: absolute;
-    width: 80px;
+    width: 60px;
     height: 80px;
     background-image: url(inimigo.png);
     background-size:contain;
@@ -98,7 +100,7 @@ body{
   .explosao{
     position: absolute;
     width: 100px;
-    height: 100px;
+    height: 120px;
     background-image: url(explosao.png);
     background-size: contain;
     background-repeat: no-repeat;
@@ -124,8 +126,8 @@ body{
 
   #Pontuacao{
     position: absolute;
-    top: 30%;
-    left: 17%;
+    top: 37%;
+    left: 25%;
     color: green;
-    font-size: 400%;
+    font-size: 300%;
   }
