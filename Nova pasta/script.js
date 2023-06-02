@@ -1,27 +1,31 @@
 document.addEventListener("DOMContentLoaded", function(){
-  const fps = 60;
-  const nave = document.getElementById("nave");
+  var nave = document.getElementById("nave");
   const projeteisContainer = document.getElementById("projeteis");
   const inimigosContainer = document.getElementById("projeteis");
   const posicaoInicial = nave.offsetLeft;
+  let projeteisInterval;
+  let inimigosInterval;
+  let colisaoInterval;
   let positionX = posicaoInicial;
   let projeteis = [];
   let inimigos = [];
   let lvl = 1;
   document.addEventListener("keydown", moveNave);
 
-  // 60 fps
-  function loop() {
+  function loop(){
+    nave.style.top = 600 + 'px';
     requestAnimationFrame(loop);
-    // Funções de atualização do jogo aqui
+
+    // Funções de atualização do jogo
     moverProjeteis();
     moverInimigos();
     verificarColisao();
   }
-  
-  setInterval(criarProjetilLVL1, 350); // Cria um novo projetil a cada x segundo
-  setInterval(criarInimigo, 300); // Cria um novo inimigo a cada x segundos
-  setInterval(verificarColisao, 350); // verifica se houve colisão entre projeteis em x segundos
+
+  projeteisInterval = setInterval(criarProjetilLVL1, 350);
+  inimigosInterval = setInterval(criarInimigo, 300);
+  colisaoInterval = setInterval(verificarColisao, 350);
+  setInterval(function() {reproduzirSom('trilha.mp3')}, 15000);
   loop();
 
   function moveNave(event){
@@ -129,12 +133,12 @@ document.addEventListener("DOMContentLoaded", function(){
       inimigo.style.backgroundSize = 'cover';
       inimigo.style.width = 80 + 'px';
     }
-    if(numeroAleatorio === 3 && pontos > 1900){
+    if(numeroAleatorio === 3 && pontos > 2900){
       inimigo.style.backgroundImage = 'url(inimigo3.png)';
       inimigo.style.backgroundSize = 'cover';
       inimigo.style.width = 60 + 'px';
     }
-    if(numeroAleatorio === 4 && pontos > 2900){
+    if(numeroAleatorio === 4 && pontos > 5900){
       inimigo.style.backgroundImage = 'url(inimigo4.png)';
       inimigo.style.height = 60 + 'px';
     }
@@ -200,15 +204,16 @@ document.addEventListener("DOMContentLoaded", function(){
           explosao.style.top = inimigo.posY + "px";
           projeteisContainer.appendChild(explosao);
   
-          setTimeout(function (){
+          setTimeout(function(){
             projeteisContainer.removeChild(explosao);
-          }, 3000);
+          },3000);
   
           projeteisContainer.removeChild(projetil.element);
           projeteis.splice(i, 1);
           inimigosContainer.removeChild(inimigo.element);
           inimigos.splice(j, 1);
 
+          reproduzirSom('arcade.wav');
           aumentarPontos();
           i--;
           break;
@@ -223,11 +228,16 @@ document.addEventListener("DOMContentLoaded", function(){
     if(pontos > 1900 && pontos < 2900){
       lvl = 2;
     } // aumenta o LVL da nave para 2
-    if(pontos > 2900){
+    if(pontos > 4900){
       lvl = 3;
     }
     pontos += 100;
     pontosElement.innerText = pontos;
+  }
+
+  function reproduzirSom(stringsom){
+    var som = new Audio(stringsom);
+    som.play();
   }
 
   function diminuirVida(){
@@ -250,6 +260,11 @@ document.addEventListener("DOMContentLoaded", function(){
     gameOverScreen.style.display = "block";
 
     gameOverPontos.textContent = document.getElementById("valorPontos").textContent;
+
+    clearInterval(inimigosInterval);
+    clearInterval(projeteisInterval);
+    clearInterval(colisaoInterval);
+    reproduzirSom('aplauso.wav');
   }
 
 });
