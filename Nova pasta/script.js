@@ -10,11 +10,18 @@ document.addEventListener("DOMContentLoaded", function(){
   let projeteis = [];
   let inimigos = [];
   let lvl = 1;
+  let _acceleration = 0.2;
+  
+   
+  const width_left = 70;
+  const width_right = screen.width - 70;  
+  
   document.addEventListener("keydown", moveNave);
-
+  document.addEventListener("keyup", reset_acceleration);
   function loop(){
     nave.style.top = 600 + 'px';
     requestAnimationFrame(loop);
+    
 
     // Funções de atualização do jogo
     moverProjeteis();
@@ -28,16 +35,27 @@ document.addEventListener("DOMContentLoaded", function(){
   setInterval(function() {reproduzirSom('trilha.mp3')}, 15000);
   loop();
 
+  function reset_acceleration(event){
+    _acceleration = 0.2;
+  }
+
   function moveNave(event){
     const key = event.keyCode;
 
-    if(key === 37 || key == 65){ // Tecla esquerda
-      positionX -= 40;
+    if(key === 37 || key == 65){ // Tecla esquerda ou "a"
+      if(positionX > width_left){
+        positionX -= 15 * _acceleration;
+        _acceleration += 0.2;
+      }
     }
-    else if(key === 39 || key == 68){ // Tecla direita
-      positionX += 40;
+    else if(key === 39 || key == 68){ // Tecla direita ou "d"
+      if(positionX < width_right){
+        positionX += 15 * _acceleration;
+        _acceleration += 0.2;
+      }
     }
     nave.style.left = positionX + "px";
+    console.log(positionX);
   }
 
   function criarProjetilLVL1(){

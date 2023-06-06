@@ -1,7 +1,14 @@
-body{
+  @font-face {
+    font-family: future-earth;
+    src: url(future-earth.ttf);
+    font-style: normal;
+  }
+
+  body{
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: future-earth;
   }
   
   #pontos{
