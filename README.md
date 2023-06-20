@@ -18,7 +18,8 @@ A colisão com algum asteroide resulta na perda de uma vida
 
 # Rankeamento
 
-O jogo possue um rankeamento global, onde é possível ver os melhores scores, sua pontuação será vinculada a sua conta cadastrada no início do jogo
+O jogo possue um rankeamento global, onde é possível ver os melhores scores, 
+sua pontuação será vinculada a sua conta cadastrada no início do jogo
 
 # Tecnologias usadas para o desenvolvimento
 
