@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
+  
   var nave = document.getElementById("nave");
   const projeteisContainer = document.getElementById("projeteis");
   const inimigosContainer = document.getElementById("projeteis");
@@ -12,12 +13,21 @@ document.addEventListener("DOMContentLoaded", function(){
   let lvl = 1;
   let _acceleration = 0.2;
   
-   
+  
   const width_left = 70;
   const width_right = screen.width - 70;  
   
   document.addEventListener("keydown", moveNave);
   document.addEventListener("keyup", reset_acceleration);
+  
+  projeteisInterval = setInterval(criarProjetilLVL1, 350);
+  inimigosInterval = setInterval(criarInimigo, 300);
+  colisaoInterval = setInterval(verificarColisao, 350);
+  reproduzirSom('trilha.mp3');
+  setInterval(function() {reproduzirSom('trilha.mp3')}, 15000);
+  loop();
+
+
   function loop(){
     nave.style.top = 600 + 'px';
     requestAnimationFrame(loop);
@@ -28,12 +38,6 @@ document.addEventListener("DOMContentLoaded", function(){
     moverInimigos();
     verificarColisao();
   }
-
-  projeteisInterval = setInterval(criarProjetilLVL1, 350);
-  inimigosInterval = setInterval(criarInimigo, 300);
-  colisaoInterval = setInterval(verificarColisao, 350);
-  setInterval(function() {reproduzirSom('trilha.mp3')}, 15000);
-  loop();
 
   function reset_acceleration(event){
     _acceleration = 0.2;
@@ -55,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function(){
       }
     }
     nave.style.left = positionX + "px";
-    console.log(positionX);
   }
 
   function criarProjetilLVL1(){
@@ -254,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 
   function reproduzirSom(stringsom){
+    if(stringsom == 'trilha.mp3') console.log("TENTANDO REPRODUZIR trilha.mp3");
     var som = new Audio(stringsom);
     som.play();
   }
