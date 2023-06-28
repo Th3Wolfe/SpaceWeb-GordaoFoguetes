@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  #fundo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(fundo.jpeg);
+    background-size:cover;
+    background-position: center;
+    background-repeat: repeat-y;
+    animation: moveBackground 10s linear infinite;
+  }
+  
+  @keyframes moveBackground{
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 -2000px;
+    }
+  }
+  
+  #nave {
+    position: absolute;
+    bottom: 50px;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 180px;
+    background-image: url(nave.png);
+    background-size: contain;
+    background-color: transparent;
+  }
+  
+  #projeteis{
+    position: absolute;
+  }
+  
+  .projetil{
+    position: absolute;
+    width: 10px;
+    height: 60px;
+    background-image: url();
+    background-size: cover;
+    background-position: center;
+  }
+  
+  @keyframes moveProjeteis{
+    from {
+      top: 100%;
+    }
+    to {
+      top: -100px;
+    }
+  }
+
+  .inimigo {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-image: url(inimigo.png);
+    background-size:contain;
+    background-color: transparent;
+  }
+  
+  @keyframes moveInimigos {
+    from {
+      transform: translateY(-80px);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+  
+  .inimigo {
+    animation: moveInimigos linear infinite; /* Aumente a duração para tornar a animação mais lenta */
+  }
+
+  .explosao {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-image: url(explosao.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: fadeOut 3s forwards;
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
