@@ -1,4 +1,4 @@
-![BannerGame](https://github.com/Th3Wolfe/SpaceWeb-GordaoFoguetes/assets/105323979/7e11b67b-6633-4f04-912d-a01dceb5bd66)
+![BannerGame](https://github.com/Th3Wolfe/SpaceWeb-GordaoFoguetes/blob/Jo%C3%A3o/Nova%20pasta/BannerGame.png?raw=true)
 
 # Como jogar
 
