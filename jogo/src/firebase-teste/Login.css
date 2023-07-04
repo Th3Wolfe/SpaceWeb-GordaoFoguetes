@@ -1,0 +1,49 @@
+@import url('https://fonts.cdnfonts.com/css/future-earth');
+
+.login-container {
+  font-family: 'Future Earth', sans-serif;
+  background-image: url("https://cdn.wallpapersafari.com/68/60/VKy1AE.jpg");
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container h1 {
+  color: white;
+}
+
+.login-input,
+.password-input {
+  padding: 15px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  margin-bottom: 10px;
+}
+
+.login-input::placeholder,
+.password-input::placeholder {
+  color: white;
+}
+
+.login-button,
+.register-button {
+  background-color: dodgerblue;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  border-radius: 10px;
+  color: white;
+  font-size: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.login-button:hover,
+.register-button:hover {
+  background-color: deepskyblue;
+}

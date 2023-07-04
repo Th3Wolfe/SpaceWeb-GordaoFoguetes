@@ -1,165 +1,240 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 
-function App() {
-  useEffect(() => {
-    const naveElement = document.getElementById("nave");
-    const projeteisContainer = document.getElementById("projeteis");
-    const posicaoInicial = naveElement.offsetLeft;
-    let positionX = posicaoInicial;
-    let projeteis = [];
-    let inimigos = [];
+// Importar o arquivo de áudio
+import trilhaAudio from './Arquivos/Audios/trilha.mp3'
+import somExplosao from './Arquivos/Audios/arcade.wav';
 
+const NaveEspacial = () => {
+  const [positionX, setPositionX] = useState(0);
+  const [projeteis, setProjeteis] = useState([]);
+  const [inimigos, setInimigos] = useState([]);
+  const [explosions, setExplosions] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
+  const [pontos, setPontos] = useState(0);
+  const [vidas, setVidas] = useState(5);
+
+  // Adicione um estado para controlar a reprodução do áudio
+  const [audioPlaying, setAudioPlaying] = useState(false);
+
+  useEffect(() => {
     function moveNave(event) {
       const key = event.keyCode;
 
-      if (key === 37) { // Tecla esquerda
-        positionX -= 15;
-      } else if (key === 39) { // Tecla direita
-        positionX += 15;
-      }
+      if (key === 37 || key === 65) {
+        // Tecla esquerda ou 'A'
+        setPositionX((prevX) => prevX - 15);
 
-      naveElement.style.left = positionX + "px";
+        // Inicie a reprodução do áudio
+        if (!audioPlaying) {
+          setAudioPlaying(true);
+          const audio = new Audio(trilhaAudio);
+          audio.loop = true;
+          audio.play();
+        }
+      } else if (key === 39 || key === 68) {
+        // Tecla direita ou 'D'
+        setPositionX((prevX) => prevX + 15);
+
+        // Inicie a reprodução do áudio
+        if (!audioPlaying) {
+          setAudioPlaying(true);
+          const audio = new Audio(trilhaAudio);
+          audio.loop = true;
+          audio.play();
+        }
+      }
     }
 
+    document.addEventListener('keydown', moveNave);
+
+    return () => {
+      document.removeEventListener('keydown', moveNave);
+    };
+  }, [audioPlaying]);
+
+  useEffect(() => {
     function criarProjetil() {
-      const projetil = document.createElement("div");
-      projetil.classList.add("projetil");
-      projeteisContainer.appendChild(projetil);
-
-      const posicaoInicialX = naveElement.offsetLeft;
-      const posicaoInicialY = naveElement.offsetTop;
-
-      projetil.style.left = posicaoInicialX + "px";
-      projetil.style.top = posicaoInicialY + "px";
-
-      projeteis.push({
-        element: projetil,
-        posX: posicaoInicialX,
-        posY: posicaoInicialY
-      });
+      const novoProjeteil = {
+        id: Date.now(),
+        posX: positionX,
+        posY: 350
+      };
+      setProjeteis((prevProjeteis) => [...prevProjeteis, novoProjeteil]);
     }
 
+    const criarProjeteisInterval = setInterval(criarProjetil, 80);
+
+    return () => {
+      clearInterval(criarProjeteisInterval);
+    };
+  }, [positionX]);
+
+  useEffect(() => {
     function moverProjeteis() {
-      for (let i = 0; i < projeteis.length; i++) {
-        const projetil = projeteis[i];
-        projetil.posY -= 40; //
-        projetil.element.style.top = projetil.posY + "px";
-
-        if (projetil.posY < 0) {
-          projeteisContainer.removeChild(projetil.element);
-          projeteis.splice(i, 1);
-          i--;
-        }
-      }
+      setProjeteis((prevProjeteis) =>
+        prevProjeteis.map((projetil) => ({
+          ...projetil,
+          posY: projetil.posY - 5
+        }))
+      );
     }
 
-    document.addEventListener("keydown", moveNave);
-    setInterval(moverProjeteis, 50); // Chama a função moverProjeteis a cada 50 milissegundos
-    setInterval(criarProjetil, 300); // Cria um novo projetil a cada meio segundo
+    const projeteisInterval = setInterval(moverProjeteis, 10);
 
+    return () => {
+      clearInterval(projeteisInterval);
+    };
+  }, [projeteis]);
+
+  useEffect(() => {
     function criarInimigo() {
-      const inimigo = document.createElement("div");
-      inimigo.classList.add("inimigo");
-      projeteisContainer.appendChild(inimigo);
-
-      const limiteEsquerdo = 30; // Defina o limite esquerdo para o movimento do inimigo
-      const limiteDireito = window.innerWidth - 130; // Defina o limite direito para o movimento do inimigo
-      const posicaoInicialX = Math.random() * (limiteDireito - limiteEsquerdo) + limiteEsquerdo;
-      const posicaoInicialY = 0;
-
-      inimigo.style.left = posicaoInicialX + "px";
-      inimigo.style.top = posicaoInicialY + "px";
-
-      inimigos.push({
-        element: inimigo,
-        posX: posicaoInicialX,
-        posY: posicaoInicialY
-      });
+      const novoInimigo = {
+        id: Date.now(),
+        posX: Math.random() * window.innerWidth,
+        posY: 0
+      };
+      setInimigos((prevInimigos) => [...prevInimigos, novoInimigo]);
     }
 
-    function colisao(element1, element2) {
-      const rect1 = element1.getBoundingClientRect();
-      const rect2 = element2.getBoundingClientRect();
-    
-      return !(
-        rect1.top > rect2.bottom ||
-        rect1.bottom < rect2.top ||
-        rect1.right < rect2.left ||
-        rect1.left > rect2.right
-      );
-    }
-    
+    const criarInimigosInterval = setInterval(criarInimigo, 1000);
 
-    function moverInimigos() {
-      for (let i = 0; i < inimigos.length; i++) {
-        const inimigo = inimigos[i];
-        inimigo.posY += 2;
-        inimigo.element.style.transform = `translateY(${inimigo.posY}px)`;
-
-        if (inimigo.posY > window.innerHeight || colisao(naveElement, inimigo.element)) {
-          projeteisContainer.removeChild(inimigo.element);
-          inimigos.splice(i, 1);
-          i--;
-        }
-      }
-    }
-
-    function colisao(element1, element2) {
-      const rect1 = element1.getBoundingClientRect();
-      const rect2 = element2.getBoundingClientRect();
-
-      return !(
-        rect1.top > rect2.bottom ||
-        rect1.bottom < rect2.top ||
-        rect1.right < rect2.left ||
-        rect1.left > rect2.right
-      );
-    }
-
-    setInterval(moverInimigos, 50); // Chama a função moverInimigos a cada 50 milissegundos
-    setInterval(criarInimigo, 500); // Cria um novo inimigo a cada 3 segundos
-
-    function verificarColisao() {
-      for (let i = 0; i < projeteis.length; i++) {
-        const projetil = projeteis[i];
-
-        for (let j = 0; j < inimigos.length; j++) {
-          const inimigo = inimigos[j];
-
-          if (colisao(projetil.element, inimigo.element)) {
-            const explosao = document.createElement("div");
-            explosao.style.left = inimigo.posX + "px";
-            explosao.style.top = inimigo.posY + "px";
-            explosao.classList.add("explosao");
-            projeteisContainer.appendChild(explosao);
-
-            setTimeout(function () {
-              projeteisContainer.removeChild(explosao);
-            }, 3000);
-
-            projeteisContainer.removeChild(projetil.element);
-            projeteis.splice(i, 1);
-            projeteisContainer.removeChild(inimigo.element);
-            inimigos.splice(j, 1);
-
-            i--;
-            break;
-          }
-        }
-      }
-    }
-
-    setInterval(verificarColisao, 50);
+    return () => {
+      clearInterval(criarInimigosInterval);
+    };
   }, []);
 
-  return (
-    <>
-      <div className="fundo"></div>
-      <div id="nave" className="nave"></div>
-      <div id="projeteis"></div>
-    </>
-  );
-}
+  useEffect(() => {
+    function moverInimigos() {
+      setInimigos((prevInimigos) =>
+        prevInimigos.map((inimigo) => ({
+          ...inimigo,
+          posY: inimigo.posY + 2
+        }))
+      );
+    }
 
-export default App;
+    const inimigosInterval = setInterval(moverInimigos, 10);
+
+    return () => {
+      clearInterval(inimigosInterval);
+    };
+  }, [inimigos]);
+
+  useEffect(() => {
+    function limitarMovimentoNave() {
+      const larguraTela = window.innerWidth;
+      const limiteEsquerda = 0;
+      const limiteDireita = larguraTela - 80; //  tamanho da nave 80 pixels
+
+      if (positionX < limiteEsquerda) {
+        setPositionX(limiteEsquerda);
+      } else if (positionX > limiteDireita) {
+        setPositionX(limiteDireita);
+      }
+    }
+
+    limitarMovimentoNave();
+  }, [positionX]);
+
+  useEffect(() => {
+    function detectarColisao() {
+      projeteis.forEach((projetil) => {
+        inimigos.forEach((inimigo) => {
+          if (
+            projetil.posX < inimigo.posX + 80 &&
+            projetil.posX + 10 > inimigo.posX &&
+            projetil.posY < inimigo.posY + 80 &&
+            projetil.posY + 60 > inimigo.posY
+          ) {
+            setPontos((prevPontos) => prevPontos + 100);
+            setExplosions((prevExplosions) => [...prevExplosions, inimigo]);
+            setProjeteis((prevProjeteis) =>
+              prevProjeteis.filter((p) => p.id !== projetil.id)
+            );
+            setInimigos((prevInimigos) =>
+              prevInimigos.filter((i) => i.id !== inimigo.id)
+            );
+  
+            // Crie uma nova instância do elemento Audio para reproduzir o som da explosão
+            const som = new Audio(somExplosao);
+            som.play();
+          }
+        });
+      });
+    }
+  
+    detectarColisao();
+  }, [projeteis, inimigos]);
+
+  useEffect(() => {
+    function removerExplosao() {
+      setExplosions((prevExplosions) =>
+        prevExplosions.filter((explosao) => explosao.id !== explosions[0].id)
+      );
+    }
+
+    if (explosions.length > 0) {
+      const explosaoTimeout = setTimeout(removerExplosao, 3000);
+      return () => clearTimeout(explosaoTimeout);
+    }
+  }, [explosions]);
+
+  return (
+    <div>
+      {gameOver ? (
+        <div className="game-over">Game Over</div>
+      ) : (
+        <div id="fundo">
+          <div id="nave" style={{ left: `${positionX}px` }}></div>
+          <div id="projeteis">
+            {projeteis.map((projetil) => (
+              <div
+                key={projetil.id}
+                className="projetil"
+                style={{
+                  left: `${projetil.posX}px`,
+                  top: `${projetil.posY}px`
+                }}
+              ></div>
+            ))}
+          </div>
+          <div id="pontos">
+            <p>
+              Score: <span id="valorPontos">{pontos}</span>
+            </p>
+            <p>
+              Vidas: <span id="valorVida">{vidas}</span>
+            </p>
+          </div>
+          <div id="inimigos">
+            {inimigos.map((inimigo) => (
+              <div
+                key={inimigo.id}
+                className="inimigo"
+                style={{
+                  left: `${inimigo.posX}px`,
+                  top: `${inimigo.posY}px`
+                }}
+              ></div>
+            ))}
+          </div>
+          <div id="explosions">
+            {explosions.map((explosao) => (
+              <div
+                key={explosao.id}
+                className="explosao"
+                style={{
+                  left: `${explosao.posX}px`,
+                  top: `${explosao.posY}px`
+                }}
+              ></div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default NaveEspacial;
