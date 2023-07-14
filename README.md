@@ -12,7 +12,7 @@
 
 # Objetivo
 
-Obter o maximo de pontos possíveis sem perder todas as vidas, e obter o maior ranking blobal.
+Obter o maximo de pontos possíveis sem perder todas as vidas, e obter o maior ranking da sessão.
 
 # Mecânicas
 
@@ -21,8 +21,9 @@ A colisão com algum asteroide resulta na perda de uma vida
 
 # Rankeamento
 
-O jogo possue um rankeamento global, onde é possível ver os melhores scores, 
-sua pontuação será vinculada a sua conta cadastrada no início do jogo
+O jogo possue um rankeamento por sessão, onde é possível ver os melhores scores, 
+caso a sessão seja encerrada os scores serão perdidos,
+sua pontuação será vinculada a sua conta cadastrada no início do jogo.
 
 # Tecnologias usadas para o desenvolvimento
 - Front-end
