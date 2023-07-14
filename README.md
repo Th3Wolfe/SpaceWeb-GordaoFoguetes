@@ -36,5 +36,5 @@ sua pontuação será vinculada a sua conta cadastrada no início do jogo
 
 - Iago Martins Silva
 - João Lucas Moraes de Oliveira
-- Vinícuis Vicente Alvarenga
+- Vinícius Vicente Alvarenga
 - Gustavo Totti Custódio dos Santos 
