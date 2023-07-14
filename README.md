@@ -1,5 +1,8 @@
 ![BannerGame](https://github.com/Th3Wolfe/SpaceWeb-GordaoFoguetes/blob/Jo%C3%A3o/Nova%20pasta/BannerGame.png?raw=true)
 
+# Link para jogar
+- https://th3wolfe.github.io/SpaceWeb-GordaoFoguetes/
+
 # Como jogar
 
 - Controles:
