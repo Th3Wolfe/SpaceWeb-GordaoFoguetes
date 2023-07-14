@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.cdnfonts.com/css/future-earth" rel="stylesheet">
+  <title>Tabela de Pontuações</title>
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/future-earth');
+    body {
+      font-family: 'Future Earth', sans-serif;
+      text-align: center;
+      background-image: url("https://images3.alphacoders.com/836/thumb-1920-836705.jpg");
+    }
+
+    h1 {
+      color: #7CFC00;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+
+    h2 {
+      color: #7CFC00;
+    }
+
+    table {
+      background-color: rgba(0, 0, 0, 0.8);
+      margin: 20px auto;
+      width: 60%;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      color: white;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateX(-8px);
+        transform: translateY(-8px);
+      }
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    td:first-child {
+      font-weight: bold;
+    }
+    
+  </style>
+</head>
+<body>
+  <h1>Tabela de Pontuações</h1>
+
+  <a href="javascript:void(0)" onClick="history.go(-1); return false;">Jogar novamente</a>
+  <br>
+  
+
+  <audio autoplay loop>
+    <source src="scoreboard-musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+   // Simulação de pontuação do jogo
+var pontuacao = 0;
+var vidas = 3;
+
+// Tabela de classificação
+var jogadores = [];
+
+// Função para adicionar o jogador e pontuação atual à tabela
+function adicionarJogador(nome, pontuacao) {
+  jogadores.push({ nome: nome, pontuacao: pontuacao });
+}
+
+// Função para salvar os jogadores no sessionStorage
+function salvarJogadores() {
+  // Converte os jogadores para JSON e salva no sessionStorage
+  sessionStorage.setItem("jogadores", JSON.stringify(jogadores));
+}
+
+// Função para carregar os jogadores do sessionStorage
+function carregarJogadores() {
+  // Obtém os jogadores salvos do sessionStorage
+  var jogadoresSalvos = sessionStorage.getItem("jogadores");
+
+  // Verifica se existem jogadores salvos
+  if (jogadoresSalvos) {
+    // Converte os jogadores de JSON para objeto JavaScript
+    jogadores = JSON.parse(jogadoresSalvos);
+  }
+}
+
+function exibirPontuacao() {
+  // Classificar os jogadores por pontuação (maior para menor)
+  jogadores.sort(function(a, b) {
+    return b.pontuacao - a.pontuacao;
+  });
+
+  // Criar tabela de classificação
+  var tabela = document.createElement("table");
+
+  // Cabeçalho da tabela
+  var cabecalho = tabela.createTHead();
+  var linhaCabecalho = cabecalho.insertRow();
+  var celulaPosicao = linhaCabecalho.insertCell();
+  var celulaNome = linhaCabecalho.insertCell();
+  var celulaPontuacao = linhaCabecalho.insertCell();
+  celulaPosicao.textContent = "Posição";
+  celulaNome.textContent = "Nome";
+  celulaPontuacao.textContent = "Pontuação";
+
+  // Linhas com dados dos jogadores
+  var corpoTabela = tabela.createTBody();
+  for (var i = 0; i < jogadores.length; i++) {
+    var linha = corpoTabela.insertRow();
+    var celulaPosicao = linha.insertCell();
+    var celulaNome = linha.insertCell();
+    var celulaPontuacao = linha.insertCell();
+    celulaPosicao.textContent = i + 1;
+    celulaNome.textContent = jogadores[i].nome;
+    celulaPontuacao.textContent = jogadores[i].pontuacao;
+  }
+
+  // Exibir tabela de classificação
+  var divClassificacao = document.createElement("div");
+  divClassificacao.appendChild(tabela);
+  document.body.appendChild(divClassificacao);
+}
+
+// Carrega os jogadores do sessionStorage
+carregarJogadores();
+
+// Obtém o nome do jogador e a pontuação atual da página anterior
+var nomeJogador = sessionStorage.getItem("nomeJogador");
+var pontos = Number(sessionStorage.getItem("pontos"));
+
+// Verifica se o nome do jogador existe
+if (nomeJogador) {
+  // Adiciona o jogador e a pontuação atual à tabela
+  adicionarJogador(nomeJogador, pontos);
+
+  // Salva os jogadores permanentemente
+  salvarJogadores();
+}
+
+// Exibe a tabela de pontuações atualizada
+exibirPontuacao();
+  </script>
+</body>
+</html>

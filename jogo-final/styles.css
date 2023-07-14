@@ -1,0 +1,151 @@
+@font-face {
+  font-family: future-earth;
+  src: url(future-earth.ttf);
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: future-earth;
+}
+
+#pontos {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border: 5px solid rgba(0, 0, 0, 0.5);;
+  font-size: 24px;
+  font-weight: bold;
+  color: whitesmoke;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#fundo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(fundo.jpeg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat-y;
+  animation: moveBackground 10s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 -2000px;
+  }
+}
+
+#nave {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 180px;
+  background-image: url(nave.png);
+  background-size: contain;
+  background-color: transparent;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateX(-65%) scale(1);
+  }
+  50% {
+    transform: translateX(-65%) scale(1.1);
+  }
+  100% {
+    transform: translateX(-65%) scale(1);
+  }
+}
+
+#projeteis {
+  position: absolute;
+}
+
+.projetil {
+  position: absolute;
+  width: 20px;
+  height: 70px;
+  border-radius: 50%;
+  background-image: url(tiro.png);
+  background-size: cover;
+  background-position: center;
+  filter:
+    drop-shadow(0 10px 20px #e90808)
+    drop-shadow(0 0 10px #dd5b05);
+  background-color: transparent;
+}
+
+@keyframes moveProjeteis {
+  from {
+    top: 100%;
+  }
+  to {
+    top: -100px;
+  }
+}
+
+.inimigo {
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  background-image: url(inimigo.png);
+  background-size: contain;
+  background-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
+  animation: moveInimigos linear infinite;
+}
+
+@keyframes moveInimigos {
+  from {
+    transform: translateY(-80px);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.explosao {
+  position: absolute;
+  width: 100px;
+  height: 120px;
+  background-image: url(explosao.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+#gameover {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
+
+#Pontuacao {
+  position: absolute;
+  top: 37%;
+  left: 25%;
+  color: green;
+  font-size: 300%;
+}
